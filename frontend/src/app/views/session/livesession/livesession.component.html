@@ -1,0 +1,46 @@
+<!-- <div class="container">
+	<div width="700" height="400" style="position: relative;">
+		<button class="btn btn-square btn-dark" width="500" height="400"
+			style="position: absolute; top:0px">here</button>
+		<canvas #canvas width="600" height="300" style="position: absolute; top: 0px"></canvas>
+	</div>
+</div> -->
+
+<div>
+	<div class="card" id="remoteid">
+		<div #remote class="row customcameragroup" style="width: 100%">
+			<div class="col-md-4" *ngFor="let remote of commonService.srcRemote; let i = index">
+				<video id="{{ 'remotedevice' + i }}" style="width: 100%; visibility: hidden;" controls autoplay></video>
+			</div>
+		</div>
+	</div>
+	<div class="card" id="mineid">
+		<div #mine class="row customcameragroup" style="width: 100%">
+			<div class="col-md-4" *ngFor="let mine of commonService.srcNative; let i = index">
+				<video id="{{ 'mydevice' + i }}" style="width: 100%; visibility: hidden;" controls autoplay></video>
+			</div>
+		</div>
+	</div>
+</div>
+<button class="btn btn-square btn-block btn-dark" (click)="endSessionModal.show()">End Session</button>
+
+<div bsModal #endSessionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog modal-primary" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Really?</h4>
+				<button type="button" class="close" (click)="endSessionModal.hide()" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<p>Are you sure to finish Live-Session?</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" (click)="endSessionModal.hide()">Close</button>
+				<button type="button" class="btn btn-primary" (click)="endSession()">Live Finish</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

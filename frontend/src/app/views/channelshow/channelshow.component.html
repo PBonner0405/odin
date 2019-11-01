@@ -1,0 +1,166 @@
+<div *ngIf="channelInfo">
+  <div class="card" style="max-width: 700px; margin: 0 auto;">
+
+    <video #videoPlayer *ngIf="selectedVideoPrice==0||payedflag!=0" id="mainplay" controls style="width: 100%" autoplay>
+      <source #videoSource1 src={{selectedVideo}} type="video/mp4">
+      <source #videoSource2 src={{selectedVideo}} type="video/ogg">
+      Your browser does not support the video tag.
+    </video>
+    <video #videoPlayer *ngIf="selectedVideoPrice!=0&&payedflag==0" id="mainplay" style="width: 100%">
+      <source #videoSource1 src={{selectedVideo}} type="video/mp4">
+      <source #videoSource2 src={{selectedVideo}} type="video/ogg">
+      Your browser does not support the video tag.
+    </video>
+
+    <div *ngIf="selectedVideoPrice!=0&&payedflag==0" class="content">
+      <!-- <h1>Payment</h1>
+    <p>you have to pay {{selectedVideoPrice}}$</p> -->
+      <div class="centerbutton">
+        <h3>Payment Require</h3>
+        <button id="myBtn" (click)="payForVideo(selectedVideoPrice)">Pay {{selectedVideoPrice}}$ via Paypal</button>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="row" style="max-width: 1200px; margin: 0 auto;">
+        <div class="col-md-3" style="text-align: center; margin-top: 10px; margin-left: 0px; margin-right: 0px">
+          <h4>{{channelInfo.channel.postuser.name}}</h4>
+          <div>
+            <img class="img-avatar" src={{defaultAvatarPath+channelInfo.channel.postuser.avatarname}} alt="Avatar"><br>
+            <span
+              style="background-color: rgb(70, 70, 70); border-radius: 5px; padding-top: 3px; padding-bottom: 3px; padding-left: 20px; padding-right: 20px; color: white; float: right;">{{currentActivity}}<i
+                class="fa fa-circle {{currentActivity}}"></i>
+            </span>
+          </div>
+
+          <button *ngIf="currentUser._id!=channelInfo.channel.postuser._id" class="btn btn-success custombutton"
+            [routerLink]="['/message']" (click)="contactStart(channelInfo.channel.postuser._id)"
+            style="width: 100%; margin-top: 5px;">
+            <span><i class="fa fa-wechat fa-lg" style="margin-top: 5px"></i></span>
+            Chat Now
+          </button>
+          <button *ngIf="currentUser._id!=channelInfo.channel.postuser._id" class="btn btn-primary custombutton"
+            (click)="liveInstantRequest(channelInfo.channel.postuser._id)" style="width: 100%">
+            <span><i class="fa fa-tv fa-lg" style="margin-top: 3px;"></i></span>
+            Instant Session
+          </button>
+          <button *ngIf="currentUser._id!=channelInfo.channel.postuser._id" class="btn btn-warning custombutton"
+            (click)="liveScheduleRequest(channelInfo.channel.postuser._id)" style="width: 100%">
+            <span><i class="fa fa-tv fa-lg" style="margin-top: 3px;"></i></span>
+            Schedule Session
+          </button>
+          <!-- <span><i class="cui-envelope-closed icons font-2xl mt-1"></i></span>{{channelInfo.channel.postuser.email}}<br>
+        <span><i
+            class="cui-calendar icons font-2xl mt-1"></i></span>{{channelInfo.channel.postuser.birthday.substring(0, 10)}}<br>
+        <span><i class="cui-phone icons font-2xl mt-1"></i></span>{{channelInfo.channel.postuser.phone}}<br> -->
+
+
+        </div>
+        <div class="col-md-6 card" style="text-align: center; margin-top: 10px;">
+          <h2 class="card-sub align-middle mt-3">{{channelInfo.channel.data.title}}</h2>
+          <div><u style="color: #f86c6b; float: right">views: {{channelInfo.channel.data.visitorids.length}}</u></div>
+          <br>
+          <!-- <div style="width: 100%; text-align: left">
+          <span
+            style="background-color: #ddd; border-radius: 5px; padding-top: 3px; padding-bottom: 3px; padding-left: 30px; padding-right: 30px; color: indianred">{{channelInfo.channel.data.skill}}</span>
+        </div> -->
+
+          <p>STATION: {{channelInfo.channel.data.station}}</p>
+          <p>EXPERTISE LEVEL: {{channelInfo.channel.data.level}}</p>
+          <p>{{channelInfo.channel.data.description}}</p>
+          <div class="card" *ngIf="reviewList.length!=0">
+            <div class="card" *ngFor="let review of reviewList" style="margin: 0px;">
+              <div style="margin-top: 3px; margin-left: 5px; margin-right: 5px">
+                <img class="img-avatar-small" src={{defaultAvatarPath+review.avatar}} alt="Avatar">
+                <div style="float: left">
+                  <p style="font-size: 17px; margin: 0px">{{review.username}}</p>
+                  <p style="margin: 0px">Reviewed {{review.date}}</p>
+                </div>
+              </div>
+              <ngb-rating [(rate)]="review.rate" [readonly]="true" max="5">
+                <ng-template let-fill="fill" let-index="index">
+                  <span class="star" [class.filled]="fill === 100">&#9733;</span>
+                </ng-template>
+              </ngb-rating>
+              <p style="text-align: left; margin-left: 2px; margin-bottom: 2px;">{{review.description}}</p>
+            </div>
+          </div>
+          <div class="card" *ngIf="feedbackStatus==0">
+            <h4 style="text-align: left; margin-top: 10px; margin-left: 15px; margin-bottom: 8px">Your Feedback</h4>
+            <p *ngIf="isWrongRating" style="color:#f86c6b; margin-bottom: 3px; text-align: left">*Select your review
+              point*</p>
+            <h6 style="text-align: left; margin-left: 8px">How helpful for you?
+              <ngb-rating [(rate)]="reviewtmp.rating" max="5">
+                <ng-template let-fill="fill" let-index="index">
+                  <span class="star" [class.filled]="fill === 100">&#9733;</span>
+                </ng-template>
+              </ngb-rating>
+            </h6>
+
+            <p *ngIf="isWrongFeedback" style="color:#f86c6b; margin-bottom: 3px; text-align: left">*Please input
+              feedback
+              description*</p>
+            <textarea type="text" style="width: 100%" rows="4" placeholder="Leave your feedback..."
+              [(ngModel)]="reviewtmp.feedback"></textarea>
+            <button type="button" class="btn btn-square btn-block btn-primary" (click)="postFeedback()">Post
+              To...</button>
+          </div>
+
+          <h4 *ngIf="feedbackStatus==1" style="color: #4dbd74">Thanks for your Feedback</h4>
+          <h4 *ngIf="feedbackStatus==2" style="color: #f86c6b">Your Feedback failed</h4>
+        </div>
+        <div class="col-md-3" style="text-align: center; margin-top: 10px">
+
+          <video style="width: 100%" *ngFor="let videoitem of channelInfo.channel.data.files; let i = index"
+            (click)="videoSelect(videoitem, channelInfo.channel.data.uploadprices[i])" [tooltip]="tolTemplate">
+            <ng-template #tolTemplate>You have to pay {{channelInfo.channel.data.uploadprices[i]}}$</ng-template>
+
+            <source src={{defaultUploadPath+videoitem}} type="video/mp4">
+            <source src={{defaultUploadPath+videoitem}} type="video/ogg">
+            Your browser does not support the video tag.
+          </video>
+          <p>{{channelInfo.channel.data.files.length+" videos posted"}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div bsModal #warningModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-warning" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Hello</h4>
+          <button type="button" class="close" (click)="warningModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>{{warningDescription}}&hellip;</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" (click)="warningModal.hide()">OK</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <div id="waitingModal" class="back_div">
+    <div bsModal #waittingModal="bs-modal" class="dlg_div">
+      <div class="modal-dialog modal-primary" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Please...</h4>
+          </div>
+          <div class="modal-body">
+            <p>Please wait while accept your request&hellip;</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="dismissDlg()">Cancel Request</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+  </div>
+</div>

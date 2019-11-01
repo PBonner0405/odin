@@ -1,0 +1,452 @@
+<div class="animated fadeIn">
+  <!-- <div class = "card">
+    <input type="text"/>
+    <button class = "btn btn-success">Search</button>
+  </div> -->
+  <!-- Another variation with a button -->
+  <div class="card">
+    <div class="card-header">
+      <div style="display: flex;justify-content: center;">
+        <ngx-select [multiple]="false" [items]="items" [disabled]="ngxDisabled" [(ngModel)]="selectedStationId"
+          optionValueField="id" optionTextField="text" optGroupLabelField="text" optGroupOptionsField="children"
+          placeholder="Stations..." (selectionChanges)="doSelectStation($event)" style="min-width: 200px; float: left">
+        </ngx-select>
+        <div class="input-group" style="max-width: 300px; float: left" (keyup.enter)="searchChannel()">
+          <input type="search" class="form-control" placeholder="What do you want to learn?"
+            [(ngModel)]="currentKeyword">
+          <div class="input-group-append">
+            <button class="btn btn-secondary" type="button" (click)="searchChannel()">
+              <i class="fa fa-search"></i>
+            </button>
+          </div>
+        </div>
+        <a class="btn btn-secondary btn-outline-light" (click)="createAccount()">Create your channel</a>
+      </div>
+    </div>
+    <div class="card-body">
+      <carousel [interval]="4500">
+        <slide>
+          <img class="slideimg" src="https://miro.medium.com/max/1200/1*C1sxbAPa1uP4NYckHa432g.jpeg" alt="First slide"
+            style="display: block; width: 100%">
+          <div class="carousel-caption d-none d-md-block">
+            <h2><b class="titlecolor">Multiple Usage</b></h2>
+            <h3><b class="titlecolor">You can use with your any devices, and good response.</b></h3>
+          </div>
+        </slide>
+        <slide>
+          <img class="slideimg" src="https://exploreodin.com/uploads/screen/fit1.jpg" alt="First slide"
+            style="display: block; width: 100%">
+          <div class="carousel-caption d-none d-md-block">
+            <h2><b class="titlecolor">Fitness Channel</b></h2>
+            <h3><b class="titlecolor">Great challenge with odin channels.</b></h3>
+          </div>
+        </slide>
+        
+
+        <slide>
+          <img class="slideimg" src="https://www.learnworlds.com/app/uploads/2019/04/selling-online-courses-academy.jpg"
+            alt="Second slide" style="display: block; width: 100%">
+          <div class="carousel-caption d-none d-md-block">
+            <h2><b class="titlecolor">Several Stations</b></h2>
+            <h3><b class="titlecolor">You can get fun with several stations as you want.</b></h3>
+          </div>
+        </slide>
+        <slide>
+            <img class="slideimg" src="https://exploreodin.com/uploads/screen/fit2.jpg" alt="First slide"
+              style="display: block; width: 100%">
+            <div class="carousel-caption d-none d-md-block">
+              <h2><b class="titlecolor">Multiple channels</b></h2>
+              <h3><b class="titlecolor">Easy to access several channels with your mind.</b></h3>
+            </div>
+          </slide>
+        <slide>
+          <img class="slideimg"
+            src="https://www.templatemonster.com/blog/wp-content/uploads/2017/07/multi-device-website-mockup-generator.png"
+            alt="Third slide" style="display: block; width: 100%">
+          <div class="carousel-caption d-none d-md-block">
+            <h2><b class="titlecolor">Live Streamming</b></h2>
+            <h3><b class="titlecolor">You can get live-sessions using cameras with any devices.</b></h3>
+          </div>
+        </slide>
+      </carousel>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 col-lg-3">
+      <div class="card text-white bg-info">
+        <div class="card-body pb-0">
+          <button type="button" class="btn btn-transparent p-0 float-right">
+            <i class="icon-location-pin"></i>
+          </button>
+          <div class="text-value">{{registerUserCount}}</div>
+          <div>Registered users</div>
+        </div>
+        <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
+          <canvas baseChart class="chart" [datasets]="lineChart2Data" [labels]="lineChart2Labels"
+            [options]="lineChart2Options" [colors]="lineChart2Colours" [legend]="lineChart2Legend"
+            [chartType]="lineChart2Type"></canvas>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+    <div class="col-sm-6 col-lg-3">
+      <div class="card text-white bg-primary">
+        <div class="card-body pb-0">
+          <div class="btn-group float-right" dropdown>
+            <button type="button" class="btn btn-transparent dropdown-toggle p-0" dropdownToggle>
+              <i class="icon-settings"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+              <a class="dropdown-item" href="">Action</a>
+              <a class="dropdown-item" href="">Another action</a>
+              <a class="dropdown-item" href="">Something else here</a>
+              <a class="dropdown-item" href="">Something else here</a>
+            </div>
+          </div>
+          <div class="text-value">{{loginUserCount}}</div>
+          <div>Login users</div>
+        </div>
+        <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
+          <canvas baseChart class="chart" [datasets]="lineChart1Data" [labels]="lineChart1Labels"
+            [options]="lineChart1Options" [colors]="lineChart1Colours" [legend]="lineChart1Legend"
+            [chartType]="lineChart1Type"></canvas>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+    <div class="col-sm-6 col-lg-3">
+      <div class="card text-white bg-warning">
+        <div class="card-body pb-0">
+          <div class="btn-group float-right" dropdown>
+            <button type="button" class="btn btn-transparent dropdown-toggle p-0" dropdownToggle>
+              <i class="icon-settings"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+              <a class="dropdown-item" href="">Action</a>
+              <a class="dropdown-item" href="">Another action</a>
+              <a class="dropdown-item" href="">Something else here</a>
+            </div>
+          </div>
+          <div class="text-value">{{activeUserCount}}</div>
+          <div>Active users</div>
+        </div>
+        <div class="chart-wrapper mt-3" style="height:70px;">
+          <canvas baseChart class="chart" [datasets]="lineChart3Data" [labels]="lineChart3Labels"
+            [options]="lineChart3Options" [colors]="lineChart3Colours" [legend]="lineChart3Legend"
+            [chartType]="lineChart3Type"></canvas>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+    <div class="col-sm-6 col-lg-3">
+      <div class="card text-white bg-danger">
+        <div class="card-body pb-0">
+          <div class="btn-group float-right" dropdown>
+            <button type="button" class="btn btn-transparent dropdown-toggle p-0" dropdownToggle>
+              <i class="icon-settings"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+              <a class="dropdown-item" href="">Action</a>
+              <a class="dropdown-item" href="">Another action</a>
+              <a class="dropdown-item" href="">Something else here</a>
+            </div>
+          </div>
+          <div class="text-value">{{availableClassCount}}</div>
+          <div>Classes Available</div>
+        </div>
+        <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
+          <canvas baseChart class="chart" [datasets]="barChart1Data" [labels]="barChart1Labels"
+            [options]="barChart1Options" [colors]="barChart1Colours" [legend]="barChart1Legend"
+            [chartType]="barChart1Type"></canvas>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header" *ngIf="commonService.currentMode=='Observer'">
+          Presenter List
+        </div>
+        <div class="card-header" *ngIf="commonService.currentMode=='Presenter'">
+          Observer List
+        </div>
+        <!--/.row-->
+        <table *ngIf="commonService.currentMode=='Observer'"
+          class="table table-responsive-sm table-hover table-outline mb-0">
+          <thead class="thead-light">
+            <tr>
+              <th class="text-center"><i class="icon-people"></i></th>
+              <th>User</th>
+              <th class="text-center">Country</th>
+              <th>Rating</th>
+              <th class="text-center">Payment Method</th>
+              <th>Activity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="presenterList.length==0">
+              <div style="margin: 10px">No presenters in here...</div>
+            </tr>
+            <tr *ngFor="let registerUser of presenterList" (click)="opendialog(registerUser)">
+              <td class="text-center" *ngIf="registerUser.userdata._id != currentUser._id">
+                <div class="avatar">
+                  <img src={{defaultAvatarPath+registerUser.userdata.avatarname}} class="img-avatar"
+                    alt="admin@bootstrapmaster.com">
+                  <span *ngIf="registerUser.status.activity=='active'" class="avatar-status badge-success"></span>
+                  <span *ngIf="registerUser.status.activity=='offline'" class="avatar-status badge-danger"></span>
+                  <span *ngIf="registerUser.status.activity=='login'" class="avatar-status badge-warning"></span>
+                </div>
+              </td>
+              <td *ngIf="registerUser.userdata._id != currentUser._id">
+                <div>{{registerUser.userdata.name}}</div>
+                <div class="small text-muted">
+                  Registered: {{registerUser.userdata.registerdate}}
+                </div>
+              </td>
+              <td class="text-center" *ngIf="registerUser.userdata._id != currentUser._id">
+                <i class="flag-icon flag-icon-{{registerUser.userdata.country}} h4 mb-0"
+                  title="{{registerUser.userdata.country}}" id="{{registerUser.userdata.country}}"></i>
+              </td>
+              <td *ngIf="registerUser.userdata._id != currentUser._id">
+                <div class="clearfix">
+                  <div class="float-left">
+                    <strong>8.0</strong>
+                  </div>
+                  <div class="float-right">
+                    <small class="text-muted">Jun 11, 2015 - Jul 10, 2015</small>
+                  </div>
+                </div>
+                <div class="progress progress-xs">
+                  <div class="progress-bar bg-success" role="progressbar" style="width: 80%" aria-valuenow="80"
+                    aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </td>
+              <td class="text-center" *ngIf="registerUser.userdata._id != currentUser._id">
+                <i class="fa fa-cc-stripe" style="font-size:24px"></i>
+              </td>
+              <td *ngIf="registerUser.userdata._id != currentUser._id">
+                <!-- <div class="small text-muted">Last login</div> -->
+                <strong>{{registerUser.status.activity}}</strong>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table *ngIf="commonService.currentMode=='Presenter'"
+          class="table table-responsive-sm table-hover table-outline mb-0">
+          <thead class="thead-light">
+            <tr>
+              <th class="text-center"><i class="icon-people"></i></th>
+              <th>User</th>
+              <th class="text-center">Country</th>
+              <th class="text-center">Total Pay</th>
+              <th class="text-center">Payment Method</th>
+              <th>Activity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="presenterList.length==0">
+              <div style="margin: 10px">No presenters in here...</div>
+            </tr>
+            <tr *ngFor="let registerUser of registerUsers">
+              <td class="text-center">
+                <div class="avatar">
+                  <img src={{defaultAvatarPath+registerUser.userdata.avatarname}} class="img-avatar"
+                    alt="admin@bootstrapmaster.com">
+                  <span class="avatar-status badge-success"></span>
+                </div>
+              </td>
+              <td>
+                <div>{{registerUser.userdata.name}}</div>
+                <div class="small text-muted">
+                  Registered: {{registerUser.userdata.registerdate}}
+                </div>
+              </td>
+              <td class="text-center">
+                <i class="flag-icon flag-icon-{{registerUser.userdata.country}} h4 mb-0"
+                  title="{{registerUser.userdata.country}}" id="{{registerUser.userdata.country}}"></i>
+              </td>
+              <td class="text-center">
+                <div class="clearfix">
+                  <strong>5K $ - 17Classes</strong>
+                </div>
+              </td>
+              <td class="text-center">
+                <i class="fa fa-cc-stripe" style="font-size:24px"></i>
+              </td>
+              <td>
+                <!-- <div class="small text-muted">Last login</div> -->
+                <strong>{{registerUser.status.activity}}</strong>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+
+  <div class="row">
+    <div class="col-sm-6 col-lg-3">
+      <div class="brand-card">
+        <div class="brand-card-header bg-facebook">
+          <i class="fa fa-facebook"></i>
+          <div class="chart-wrapper">
+            <canvas baseChart class="chart" [datasets]="brandBoxChartData1" [labels]="brandBoxChartLabels"
+              [options]="brandBoxChartOptions" [colors]="brandBoxChartColours" [legend]="brandBoxChartLegend"
+              [chartType]="brandBoxChartType"></canvas>
+          </div>
+        </div>
+        <div class="brand-card-body">
+          <div>
+            <div class="text-value">89k</div>
+            <div class="text-uppercase text-muted small">friends</div>
+          </div>
+          <div>
+            <div class="text-value">459</div>
+            <div class="text-uppercase text-muted small">feeds</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+    <div class="col-sm-6 col-lg-3">
+      <div class="brand-card">
+        <div class="brand-card-header bg-twitter">
+          <i class="fa fa-twitter"></i>
+          <div class="chart-wrapper">
+            <canvas baseChart class="chart" [datasets]="brandBoxChartData2" [labels]="brandBoxChartLabels"
+              [options]="brandBoxChartOptions" [colors]="brandBoxChartColours" [legend]="brandBoxChartLegend"
+              [chartType]="brandBoxChartType"></canvas>
+          </div>
+        </div>
+        <div class="brand-card-body">
+          <div>
+            <div class="text-value">973k</div>
+            <div class="text-uppercase text-muted small">followers</div>
+          </div>
+          <div>
+            <div class="text-value">1.792</div>
+            <div class="text-uppercase text-muted small">tweets</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+    <div class="col-sm-6 col-lg-3">
+      <div class="brand-card">
+        <div class="brand-card-header bg-linkedin">
+          <i class="fa fa-linkedin"></i>
+          <div class="chart-wrapper">
+            <canvas baseChart class="chart" [datasets]="brandBoxChartData3" [labels]="brandBoxChartLabels"
+              [options]="brandBoxChartOptions" [colors]="brandBoxChartColours" [legend]="brandBoxChartLegend"
+              [chartType]="brandBoxChartType"></canvas>
+          </div>
+        </div>
+        <div class="brand-card-body">
+          <div>
+            <div class="text-value">500+</div>
+            <div class="text-uppercase text-muted small">contacts</div>
+          </div>
+          <div>
+            <div class="text-value">292</div>
+            <div class="text-uppercase text-muted small">feeds</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+    <div class="col-sm-6 col-lg-3">
+      <div class="brand-card">
+        <div class="brand-card-header bg-google-plus">
+          <i class="fa fa-google-plus"></i>
+          <div class="chart-wrapper">
+            <canvas baseChart class="chart" [datasets]="brandBoxChartData4" [labels]="brandBoxChartLabels"
+              [options]="brandBoxChartOptions" [colors]="brandBoxChartColours" [legend]="brandBoxChartLegend"
+              [chartType]="brandBoxChartType"></canvas>
+          </div>
+        </div>
+        <div class="brand-card-body">
+          <div>
+            <div class="text-value">894</div>
+            <div class="text-uppercase text-muted small">followers</div>
+          </div>
+          <div>
+            <div class="text-value">92</div>
+            <div class="text-uppercase text-muted small">circles</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>
+
+<div bsModal #infoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-info" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" *ngIf="modalShowUser">{{modalShowUser.userdata.name}} Profile</h4>
+        <button type="button" class="close" (click)="infoModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" *ngIf="modalShowUser">
+        <!-- <p>One fine body&hellip;</p> -->
+        <h2 style="color: #461082">{{modalShowUser.userdata.presentertitle}}</h2>
+        <h5 style="color: #7620b2">{{modalShowUser.userdata.presenterdescription}}</h5><br />
+        <h5 style="color: #461082">SKILL TAGS</h5>
+        <h5 *ngFor="let tag of modalShowUser.userdata.tags" style="display: inline; color: #7620b2">
+          -{{tag}}-&nbsp;&nbsp;</h5>
+
+        <!-- <div *ngFor="let scheduleitem of modalShowSchedule">
+
+        </div> -->
+        <br />
+        <br />
+        <h5 *ngIf="modalShowSchedule.length!=0" style="color: #461082">Registered Schedule</h5>
+        <ul *ngFor="let scheduleitem of modalShowSchedule" style="margin: 0px">
+          <li *ngIf="scheduleitem.type=='public'" class="worklist-item" popover="{{scheduleitem.description}}"
+            popoverTitle="{{scheduleitem.title}}" placement="below">
+            {{scheduleitem.start}} ~ {{scheduleitem.end}}</li>
+          <li *ngIf="scheduleitem.type=='private'" class="worklist-item" style="color: cornflowerblue"
+            popover="this is private event" popoverTitle="unavailable" placement="below">{{scheduleitem.start}} ~
+            {{scheduleitem.end}}
+          </li>
+        </ul>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="infoModal.hide()">Close</button>
+          <button type="button" class="btn btn-info" [routerLink]="['/message']"
+            (click)="contactStart(modalShowUser.userdata._id)">Chat now</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</div>
+
+<div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-danger" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Hello</h4>
+        <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Please complete your presenter profile first&hellip;</p>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()">Close</button>
+        <button type="button" class="btn btn-danger">Save changes</button>
+      </div> -->
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

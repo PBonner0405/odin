@@ -1,0 +1,103 @@
+<!--================Header Menu Area =================-->
+<header class="header_area">
+  <div class="main_menu">
+    <nav class="navbar navbar-expand-lg navbar-light">
+
+    </nav>
+  </div>
+</header>
+<!--================Header Menu Area =================-->
+
+<!--================Home Banner Area =================-->
+<section class="home_banner_area">
+  <div class="container box_1620">
+    <div class="banner_inner d-flex align-items-center">
+      <div class="banner_content">
+        <div class="media">
+          <div class="d-flex">
+            <img src={{avatarPath}} style="max-width: 400px;" alt="">
+          </div>
+          <div class="media-body">
+            <div class="personal_text">
+              <h6><b style="color: #2d8d54">Hello Everybody, i am</b></h6>
+              <h3 style="color: 	#461082">{{userdata.name}}</h3>
+              <button type="button" class="btn btn-block btn-ghost-success" *ngIf="!userdata.ismadeprofile"
+                data-toggle="modal" (click)="successModal.show()"><a style="font-size: 15px"><u style="font-size: 20px">Add Presenter
+                  Option</u></a></button><br />
+              <!-- <h4>Junior UI/UX Developer</h4>
+          <p>You will begin to realise why this exercise is called the Dickens Pattern (with reference to the ghost showing Scrooge some different futures)</p> -->
+              <ul class="list basic_info">
+                <li><a href="#"><i class="lnr lnr-calendar-full"></i> {{userdata.birthday}}</a></li>
+                <li><a href="#"><i class="lnr lnr-phone-handset"></i> {{userdata.phone}}</a></li>
+                <li><a href="#"><i class="lnr lnr-envelope"></i> {{userdata.email}}</a></li>
+                <!-- <li><a href="#"><i class="lnr lnr-home"></i> Santa monica bullevard</a></li> -->
+              </ul><br/>
+              <div *ngIf="userdata.ismadeprofile">
+                <h6><b style="color: #2d8d54">I am a</b></h6>
+                <h4 style="color: #461082">{{userdata.presentertitle}}</h4>
+                <h5 style="color: #7620b2">{{userdata.presenterdescription}}</h5><br />
+                <h5 style="color: #461082" >Here are my skill tags... </h5>
+                <h5 *ngFor="let tag of userdata.tags" style="display: inline; color: #7620b2">-{{tag}}-&nbsp;&nbsp;</h5>
+              </div>
+              <ul class="list personal_social">
+                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--================End Home Banner Area =================-->
+
+<div bsModal #successModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-success" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Presenter Profile Options</h4>
+        <button type="button" class="close" (click)="successModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h4 style="color: #7ed321">Tell Us About Yourself</h4>
+        <p *ngIf="isWrongPresenterTitle" style="color:#f86c6b; margin-bottom: 3px">Input your presenter title.</p>
+        <input class="form-control" type="text" name="jobdescription" placeholder="Title"
+          [(ngModel)]="pOption.title"><br />
+
+        <p *ngIf="isWrongPresenterDescription" style="color:#f86c6b; margin-bottom: 3px">Input more than 50letters.</p>
+        <div class="input-group mb-3">
+          <textarea class="form-control" type="text" name="aboutme" placeholder="Description..." rows="4" minlength="50"
+            [(ngModel)]="pOption.description"></textarea>
+        </div>
+
+        <p *ngIf="isWrongPresenterTags" style="color:#f86c6b; margin-bottom: 3px">Please select your skills.</p>
+        <!-- <ng-multiselect-dropdown [data]="dropdownList" [(ngModel)]="selectedItems" [settings]="dropdownSettings"
+          (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+        </ng-multiselect-dropdown> -->
+        <ngx-select [multiple]="true"
+                    [items]="items"
+                    [disabled]="ngxDisabled"
+                    [(ngModel)]="ngxValue"
+                    optionValueField="id" 
+                    optionTextField="text"
+                    optGroupLabelField="text" 
+                    optGroupOptionsField="children"
+                    placeholder="Skills..."
+                    (selectionChanges)="doSelectOptions($event)">
+        </ngx-select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="successModal.hide()">Close</button>
+        <button type="button" class="btn btn-success" (click)="savechange()">
+          Add to Profile
+          <i class="fa fa-spinner busySplash" [class.Show]="isBusy"></i>
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

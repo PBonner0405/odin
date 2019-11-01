@@ -1,0 +1,157 @@
+<div class="container clearfix">
+  <div class="people-list" id="people-list">
+    <!-- <div class="search">
+      <input type="text" placeholder="search" />
+      <i class="fa fa-search"></i>
+    </div> -->
+    <ul class="list" [style.height.px]="currentContactId === ''?670:800">
+      <li *ngFor="let contactUser of contactUsers" class="clearfix"
+        [ngClass]="(currentContactId==contactUser.id)?'selectedli':'unselectedli'" (click)="selectContact(contactUser)">
+
+        <img src={{defaultAvatarPath+contactUser.avatarname}} alt="avatar" />
+        <div class="about">
+          <div class="name">{{contactUser.name}} <span class="badge badge-pill badge-light badgestyle"
+              *ngIf="contactUser.unreadcount!=0">{{contactUser.unreadcount}}</span></div>
+          <div class="status">
+            <i class="fa fa-circle {{contactUser.activity}}"></i> {{contactUser.activity}}
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="chat">
+    <div class="chat-header clearfix">
+      <img src={{defaultAvatarPath+currentContactUser.avatarname}} alt="avatar" *ngIf="currentContactId!=''" />
+
+      <div class="chat-about" *ngIf="currentContactId!=''">
+        <div class="chat-with">Chat with {{currentContactUser.name}}</div>
+        <div class="chat-num-messages">already {{currentMessageList.length}} messages</div>
+      </div>
+
+      <div class="session-buttons" *ngIf="currentContactUser.isProfileComplete==true">
+        <button class="btn btn-pill btn-secondary custombutton" (click)="liveInstantRequest(currentContactUser)"
+          style="width: 100%">
+          <span><i class="fa fa-tv fa-lg"></i></span>
+          Instant Session
+        </button>
+        <button class="btn btn-pill btn-secondary custombutton" (click)="liveScheduleRequest(currentContactUser)"
+          style="width: 100%">
+          <span><i class="fa fa-tv fa-lg"></i></span>
+          Schedule Session
+        </button>
+      </div>
+      <i class="fa fa-star"></i>
+    </div> <!-- end chat-header -->
+
+    <div #chathistory class="chat-history">
+      <ul>
+        <li class="clearfix" *ngFor="let message of currentMessageList">
+          <div class="message-data align-right" *ngIf="message.receiverid == currentContactId">
+            <span class="message-data-time">{{message.time}}</span> &nbsp; &nbsp;
+            <span class="message-data-name">Me</span> <i class="fa fa-circle me"></i>
+          </div>
+          <div class="message other-message float-right" *ngIf="message.receiverid == currentContactId">
+            {{message.data}}
+          </div>
+
+          <div class="message-data" *ngIf="message.senderid == currentContactId">
+            <span class="message-data-name"><i class="fa fa-circle online"></i> Friend</span>
+            <span class="message-data-time">{{message.time}}</span>
+          </div>
+          <div class="message my-message" *ngIf="message.senderid == currentContactId">
+            {{message.data}}
+          </div>
+        </li>
+      </ul>
+
+
+      <!-- <ul>
+
+        <li>
+          <div class="message-data">
+            <span class="message-data-name"><i class="fa fa-circle online"></i> Vincent</span>
+            <span class="message-data-time">10:31 AM, Today</span>
+          </div>
+          <i class="fa fa-circle online"></i>
+          <i class="fa fa-circle online" style="color: #AED2A6"></i>
+          <i class="fa fa-circle online" style="color:#DAE9DA"></i>
+        </li>
+
+      </ul> -->
+
+    </div> <!-- end chat-history -->
+
+    <div class="chat-message clearfix">
+      <textarea name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3"
+        (keypress)="keyPress($event)" *ngIf="currentContactId!=''" [(ngModel)]="currentMessageData"></textarea>
+
+      <i class="fa fa-file-o" *ngIf="currentContactId!=''"></i> &nbsp;&nbsp;&nbsp;
+      <i class="fa fa-file-image-o" *ngIf="currentContactId!=''"></i>
+
+      <button *ngIf="currentContactId!=''" (click)="sendMessage()">Send</button>
+
+    </div> <!-- end chat-message -->
+
+  </div> <!-- end chat -->
+
+</div> <!-- end container -->
+
+<div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-danger" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Hello</h4>
+        <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>There is no-contact in here&hellip;</p>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()">Close</button>
+        <button type="button" class="btn btn-danger">Save changes</button>
+      </div> -->
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id="waitingModal" class="back_div">
+  <div bsModal #waittingModal="bs-modal" class="dlg_div">
+    <div class="modal-dialog modal-primary" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Please...</h4>
+        </div>
+        <div class="modal-body">
+          <p>Please wait while accept your request&hellip;</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="dismissDlg()">Cancel Request</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</div>
+
+<div bsModal #warningModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-warning" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Hello</h4>
+        <button type="button" class="close" (click)="warningModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>{{warningDescription}}&hellip;</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" (click)="warningModal.hide()">OK</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

@@ -1,0 +1,542 @@
+<!--<button (click)="updateEvents()">Update events</button>-->
+
+<ng-container *ngIf="calendaroptions">
+  <div class="row">
+    <div class="col-md-9 card">
+      <ng-fullcalendar class="card-body" #fullcalendar (dateClick)="dateClick($event)"
+        (clickButton)="clickButton($event)" (eventDragStop)="eventDragStop($event)" (eventDrop)="eventDrop($event)"
+        [eventsModel]="eventsModel" [options]="calendaroptions" (eventClick)="eventClick($event)"></ng-fullcalendar>
+    </div>
+    <div class="col-md-3">
+      <button type="button" class="btn btn-block btn-primary" (click)="showNewEventModal()">AddEvent</button>
+      <div class="card border-primary" style="margin-top: 22px">
+        <div class="card-header">
+          Upcoming Events...
+        </div>
+        <div class="card-body">
+          <p *ngIf="upcommingevents.length==0">There is no upcoming Events..</p>
+          <div class="card" *ngIf="upcommingevents.length>0">
+            <div class="card-body">
+              <div class="h6 text-muted text-right mb-4">
+                <i class="h1 icon-speedometer"></i>
+                <div class="row" style="display: flex;justify-content: center;"
+                  *ngIf="upcommingevents[0].source=='received'">
+                  <div class="avatar">
+                    <img src={{userAvatarPath+upcommingevents[0].partner.avatarname}}
+                      style="float: left; margin-right: 20px" />
+
+                    <span *ngIf="upcommingevents[0].partnerstatus.activity=='active'"
+                      class="avatar-status badge-success"></span>
+                    <span *ngIf="upcommingevents[0].partnerstatus.activity=='offline'"
+                      class="avatar-status badge-danger"></span>
+                    <span *ngIf="upcommingevents[0].partnerstatus.activity=='login'"
+                      class="avatar-status badge-warning"></span>
+                  </div>
+                  <div class="loginInfo">requested by
+                    {{upcommingevents[0].partner.name}}<br />{{upcommingevents[0].partner.email}}
+                  </div>
+                  <ng-template #t let-fill="fill" let-index="index">
+                    <span class="star" [class.filled]="fill === 100">
+                      <span class="half" [style.width.%]="fill">&#9733; </span> &#9733;
+                    </span>
+                  </ng-template>
+                  <ngb-rating [(rate)]="upcommingevents[0].partnerrating" [starTemplate]="t" [readonly]="true" max="5">
+                  </ngb-rating>
+                </div>
+                <div class="row" style="display: flex;justify-content: center;"
+                  *ngIf="upcommingevents[0].source=='sent'">
+                  <div class="avatar">
+                    <img src={{userAvatarPath+upcommingevents[0].partner.avatarname}}
+                      style="float: left; margin-right: 20px" />
+
+                    <span *ngIf="upcommingevents[0].partnerstatus.activity=='active'"
+                      class="avatar-status badge-success"></span>
+                    <span *ngIf="upcommingevents[0].partnerstatus.activity=='offline'"
+                      class="avatar-status badge-danger"></span>
+                    <span *ngIf="upcommingevents[0].partnerstatus.activity=='login'"
+                      class="avatar-status badge-warning"></span>
+                  </div>
+                  <div class="loginInfo">sent to
+                    {{upcommingevents[0].partner.name}}<br />{{upcommingevents[0].partner.email}}
+                  </div>
+                  <ng-template #t let-fill="fill" let-index="index">
+                    <span class="star" [class.filled]="fill === 100">
+                      <span class="half" [style.width.%]="fill">&#9733; </span> &#9733;
+                    </span>
+                  </ng-template>
+                  <ngb-rating [(rate)]="upcommingevents[0].partnerrating" [starTemplate]="t" [readonly]="true" max="5">
+                  </ngb-rating>
+                </div>
+                <div *ngIf="upcommingevents[0].source=='self'">
+                  *self-scheduled*
+                </div>
+              </div>
+              <div class="h6 mb-0">{{customizedDate(upcommingevents[0].start)}} ~</div>
+              <div class="h6 mb-0">&nbsp;&nbsp;&nbsp;&nbsp;{{customizedDate(upcommingevents[0].end)}}</div><br>
+              <h5 class="text-muted text-uppercase font-weight-bold"><u>{{upcommingevents[0].title}}</u></h5>
+              <small class="text-muted text-uppercase font-weight-bold">{{upcommingevents[0].description}}</small>
+              <br><br>
+              <!-- <div class="progress progress-xs mt-3 mb-0">
+                  <div class="progress-bar bg-danger" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div> -->
+            </div>
+          </div>
+
+          <div class="card" *ngIf="upcommingevents.length>1">
+            <div class="card-body">
+              <div class="h6 text-muted text-right mb-4">
+                <i class="h1 icon-speedometer"></i>
+                <div class="row" style="display: flex;justify-content: center;"
+                  *ngIf="upcommingevents[1].source=='received'">
+                  <div class="avatar">
+                    <img src={{userAvatarPath+upcommingevents[1].partner.avatarname}}
+                      style="float: left; margin-right: 20px" />
+
+                    <span *ngIf="upcommingevents[1].partnerstatus.activity=='active'"
+                      class="avatar-status badge-success"></span>
+                    <span *ngIf="upcommingevents[1].partnerstatus.activity=='offline'"
+                      class="avatar-status badge-danger"></span>
+                    <span *ngIf="upcommingevents[1].partnerstatus.activity=='login'"
+                      class="avatar-status badge-warning"></span>
+                  </div>
+                  <div class="loginInfo">requested by
+                    {{upcommingevents[1].partner.name}}<br />{{upcommingevents[1].partner.email}}
+                  </div>
+                  <ng-template #t let-fill="fill" let-index="index">
+                    <span class="star" [class.filled]="fill === 100">
+                      <span class="half" [style.width.%]="fill">&#9733; </span> &#9733;
+                    </span>
+                  </ng-template>
+                  <ngb-rating [(rate)]="upcommingevents[1].partnerrating" [starTemplate]="t" [readonly]="true" max="5">
+                  </ngb-rating>
+                </div>
+                <div class="row" style="display: flex;justify-content: center;"
+                  *ngIf="upcommingevents[1].source=='sent'">
+                  <div class="avatar">
+                    <img src={{userAvatarPath+upcommingevents[1].partner.avatarname}}
+                      style="float: left; margin-right: 20px" />
+
+                    <span *ngIf="upcommingevents[1].partnerstatus.activity=='active'"
+                      class="avatar-status badge-success"></span>
+                    <span *ngIf="upcommingevents[1].partnerstatus.activity=='offline'"
+                      class="avatar-status badge-danger"></span>
+                    <span *ngIf="upcommingevents[1].partnerstatus.activity=='login'"
+                      class="avatar-status badge-warning"></span>
+                  </div>
+                  <div class="loginInfo">sent to
+                    {{upcommingevents[1].partner.name}}<br />{{upcommingevents[1].partner.email}}
+                  </div>
+                  <ng-template #t let-fill="fill" let-index="index">
+                    <span class="star" [class.filled]="fill === 100">
+                      <span class="half" [style.width.%]="fill">&#9733; </span> &#9733;
+                    </span>
+                  </ng-template>
+                  <ngb-rating [(rate)]="upcommingevents[1].partnerrating" [starTemplate]="t" [readonly]="true" max="5">
+                  </ngb-rating>
+                </div>
+                <div *ngIf="upcommingevents[1].source=='self'">
+                  *self-scheduled*
+                </div>
+              </div>
+              <div class="h6 mb-0">{{customizedDate(upcommingevents[1].start)}} ~</div>
+              <div class="h6 mb-0">&nbsp;&nbsp;&nbsp;&nbsp;{{customizedDate(upcommingevents[1].end)}}</div><br>
+              <h5 class="text-muted text-uppercase font-weight-bold"><u>{{upcommingevents[1].title}}</u></h5>
+              <small class="text-muted text-uppercase font-weight-bold">{{upcommingevents[1].description}}</small>
+              <!-- <div class="progress progress-xs mt-3 mb-0">
+                  <div class="progress-bar bg-danger" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div> -->
+            </div>
+          </div>
+
+          <div class="card" *ngIf="upcommingevents.length>2">
+            <div class="card-body">
+              <div class="h6 text-muted text-right mb-4">
+                <i class="h1 icon-speedometer"></i>
+                <div class="row" style="display: flex;justify-content: center;"
+                  *ngIf="upcommingevents[2].source=='received'">
+                  <div class="avatar">
+                    <img src={{userAvatarPath+upcommingevents[2].partner.avatarname}}
+                      style="float: left; margin-right: 20px" />
+
+                    <span *ngIf="upcommingevents[2].partnerstatus.activity=='active'"
+                      class="avatar-status badge-success"></span>
+                    <span *ngIf="upcommingevents[2].partnerstatus.activity=='offline'"
+                      class="avatar-status badge-danger"></span>
+                    <span *ngIf="upcommingevents[2].partnerstatus.activity=='login'"
+                      class="avatar-status badge-warning"></span>
+                  </div>
+                  <div class="loginInfo">requested by
+                    {{upcommingevents[2].partner.name}}<br />{{upcommingevents[2].partner.email}}
+                  </div>
+                  <ng-template #t let-fill="fill" let-index="index">
+                    <span class="star" [class.filled]="fill === 100">
+                      <span class="half" [style.width.%]="fill">&#9733; </span> &#9733;
+                    </span>
+                  </ng-template>
+                  <ngb-rating [(rate)]="upcommingevents[2].partnerrating" [starTemplate]="t" [readonly]="true" max="5">
+                  </ngb-rating>
+                </div>
+                <div class="row" style="display: flex;justify-content: center;"
+                  *ngIf="upcommingevents[2].source=='sent'">
+                  <div class="avatar">
+                    <img src={{userAvatarPath+upcommingevents[2].partner.avatarname}}
+                      style="float: left; margin-right: 20px" />
+
+                    <span *ngIf="upcommingevents[2].partnerstatus.activity=='active'"
+                      class="avatar-status badge-success"></span>
+                    <span *ngIf="upcommingevents[2].partnerstatus.activity=='offline'"
+                      class="avatar-status badge-danger"></span>
+                    <span *ngIf="upcommingevents[2].partnerstatus.activity=='login'"
+                      class="avatar-status badge-warning"></span>
+                  </div>
+                  <div class="loginInfo">sent to
+                    {{upcommingevents[2].partner.name}}<br />{{upcommingevents[2].partner.email}}
+                  </div>
+                  <ng-template #t let-fill="fill" let-index="index">
+                    <span class="star" [class.filled]="fill === 100">
+                      <span class="half" [style.width.%]="fill">&#9733; </span> &#9733;
+                    </span>
+                  </ng-template>
+                  <ngb-rating [(rate)]="upcommingevents[2].partnerrating" [starTemplate]="t" [readonly]="true" max="5">
+                  </ngb-rating>
+                </div>
+                <div *ngIf="upcommingevents[2].source=='self'">
+                  *self-scheduled*
+                </div>
+              </div>
+              <div class="h6 mb-0">{{customizedDate(upcommingevents[2].start)}} ~</div>
+              <div class="h6 mb-0">&nbsp;&nbsp;&nbsp;&nbsp;{{customizedDate(upcommingevents[2].end)}}</div><br>
+              <h5 class="text-muted text-uppercase font-weight-bold"><u>{{upcommingevents[2].title}}</u></h5>
+              <small class="text-muted text-uppercase font-weight-bold">{{upcommingevents[2].description}}</small>
+              <!-- <div class="progress progress-xs mt-3 mb-0">
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div> -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</ng-container>
+
+<div bsModal #addEventModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-success" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">New Plan</h4>
+        <button type="button" class="close" (click)="addEventModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="btn-group" data-toggle="buttons" style="width: 70%; margin-left:15%">
+          <label class="btn btn-success active" (click)="setAddPrivate()">
+            <input type="radio" name="options" id="option1" style="display: none" checked>
+            <i class="fa fa-check-circle" aria-hidden="true"></i>
+            Private
+          </label>
+          <label class="btn btn-success" (click)="setAddPublic()">
+            <input type="radio" name="options" id="option3" style="display: none">
+            <i class="fa fa-check-circle" aria-hidden="true"></i>
+            Public
+          </label>
+        </div>
+        <p *ngIf="isWrongTitle" style="color:#f86c6b; margin-bottom: 3px">Select valid Event Title.</p>
+        <div class="row" style="margin-bottom: 5px">
+          <div class="col-md-3">
+            <h5 style="color: #7ed321; text-align: right; margin-top: 6px">title</h5>
+          </div>
+          <div class="col-md-8"> <input class="col-md-7" type="text" class="form-control" value=""
+              [(ngModel)]="tempEvent.title"> </div>
+        </div>
+        <!-- <p *ngIf="isWrongStartEnd" style="color:#f86c6b; margin-bottom: 3px">EndTime have to be later than StartTime.
+        </p> -->
+        <p *ngIf="isWrongStart" style="color:#f86c6b; margin-bottom: 3px">Select valid Event StartTime.</p>
+        <div class="row" style="margin-bottom: 5px">
+          <div class="col-md-3">
+            <h5 style="color: #7ed321; text-align: right; margin-top: 6px">start</h5>
+          </div>
+          <div class="col-md-8"> <input class="col-md-7" type="datetime-local" class="form-control" value=""
+              min="2000-01-01" max="2030-12-31" [(ngModel)]="tempEvent.start"> </div>
+        </div>
+        <!-- <p *ngIf="isWrongEnd" style="color:#f86c6b; margin-bottom: 3px">Select valid Event EndTime.</p>
+        <div class="row">
+          <div class="col-md-3">
+            <h4 style="color: #7ed321; text-align: right; margin-top: 6px">end</h4>
+          </div>
+          <div class="col-md-8"> <input class="col-md-7" type="datetime-local" class="form-control" value=""
+              min="2000-01-01" max="2030-12-31" [(ngModel)]="tempEvent.end"> </div>
+        </div> -->
+        <p *ngIf="isWrongDuration" style="color:#f86c6b; margin-bottom: 3px">Select valid Event Duration.</p>
+        <div class="row" style="margin-bottom: 5px">
+          <div class="col-md-3">
+            <h5 style="color: #7ed321; text-align: right; margin-top: 10px">duration</h5>
+          </div>
+          <div class="col-md-8">
+            <select class="col-md-7" class="form-control" id="eventduration1">
+              <option disabled selected value> -- select duration -- </option>
+              <option value="15">15min</option>
+              <option value="30">30min</option>
+              <option value="45">45min</option>
+              <option value="60">1hour</option>
+              <option value="75">1hour 15min</option>
+              <option value="90">1hour 30min</option>
+              <option value="105">1hour 45min</option>
+              <option value="120">2hour</option>
+              <option value="135">2hour 15min</option>
+              <option value="150">2hour 30min</option>
+              <option value="165">2hour 45min</option>
+              <option value="180">3hour</option>
+            </select>
+          </div>
+        </div>
+        <p *ngIf="isWrongChannel" style="color:#f86c6b; margin-bottom: 3px">Select valid Event Channel.</p>
+        <div class="row">
+          <div class="col-md-3">
+            <h5 style="color: #7ed321; text-align: right; margin-top: 6px">channel</h5>
+          </div>
+          <div class="col-md-8">
+            <select class="browser-default custom-select mb-3" [(ngModel)]="tempEvent.channel">
+              <option value="" disabled selected>Select channel</option>
+              <option *ngFor="let item of eventtype">{{item}}</option>
+            </select>
+          </div>
+        </div>
+        <p *ngIf="isWrongDescription" style="color:#f86c6b; margin-bottom: 3px">Select valid Event Description.</p>
+        <div class="row">
+          <div class="col-md-3">
+            <h5 style="color: #7ed321; text-align: right; margin-top: 6px">description</h5>
+          </div>
+          <div class="col-md-8"> <textarea class="col-md-7" type="text" class="form-control" rows="2"
+              [(ngModel)]="tempEvent.description"></textarea> </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="addEventModal.hide()">Close</button>
+          <button type="button" class="btn btn-success" (click)="addNewEvent()">Add Event</button>
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #eventProModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Event Customize</h4>
+        <button type="button" class="close" (click)="eventProModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- <div class="modal-body"> -->
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item list-group-item-action" style="color: black" (click)="editSelectedEvent()">Edit</li>
+        <li class="list-group-item list-group-item-action" style="color: black" (click)="removeSelectedEvent()">Remove
+        </li>
+        <li class="list-group-item list-group-item-action" style="color: black" (click)="aboutSelectedEvent()">About...
+        </li>
+      </ul>
+      <!-- </div> -->
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="eventProModal.hide()">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #editEventModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-info" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Edit Event</h4>
+        <button type="button" class="close" (click)="editEventModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="btn-group" data-toggle="buttons" style="width: 70%; margin-left:15%">
+          <label class="btn btn-info" (click)="setEditPrivate()" [ngClass]="{'active':editEvent.type === 'private'}">
+            <input type="radio" name="options" id="option1" style="display: none">
+            <i class="fa fa-check-circle" aria-hidden="true"></i>
+            Private
+          </label>
+          <label class="btn btn-info" (click)="setEditPublic()" [ngClass]="{'active':editEvent.type === 'public'}">
+            <input type="radio" name="options" id="option3" style="display: none">
+            <i class="fa fa-check-circle" aria-hidden="true"></i>
+            Public
+          </label>
+        </div>
+        <p *ngIf="isWrongTitle" style="color:#f86c6b; margin-bottom: 3px">Select valid Event Title.</p>
+        <div class="row" style="margin-bottom: 5px">
+          <div class="col-md-3">
+            <h5 style="color: #63c2de; text-align: right; margin-top: 6px">title</h5>
+          </div>
+          <div class="col-md-8"> <input class="col-md-7" type="text" class="form-control" value=""
+              [(ngModel)]="editEvent.title"> </div>
+        </div>
+        <!-- <p *ngIf="isWrongStartEnd" style="color:#f86c6b; margin-bottom: 3px">EndTime have to be later than StartTime.
+        </p> -->
+        <p *ngIf="isWrongStart" style="color:#f86c6b; margin-bottom: 3px">Select valid Event StartTime.</p>
+        <div class="row" style="margin-bottom: 5px">
+          <div class="col-md-3">
+            <h5 style="color: #63c2de; text-align: right; margin-top: 6px">start</h5>
+          </div>
+          <div class="col-md-8"> <input class="col-md-7" type="datetime-local" class="form-control" min="2000-01-01"
+              max="2030-12-31" [(ngModel)]="editEvent.start"> </div>
+        </div>
+        <!-- <p *ngIf="isWrongEnd" style="color:#f86c6b; margin-bottom: 3px">Select valid Event EndTime.</p>
+        <div class="row">
+          <div class="col-md-3">
+            <h4 style="color: #63c2de; text-align: right; margin-top: 6px">end</h4>
+          </div>
+          <div class="col-md-8"> <input class="col-md-7" type="datetime-local" class="form-control"
+              min="2000-01-01" max="2030-12-31" [(ngModel)]="editEvent.end"> </div>
+        </div> -->
+        <p *ngIf="isWrongDuration" style="color:#f86c6b; margin-bottom: 3px">Select valid Event Duration.</p>
+        <div class="row" style="margin-bottom: 5px">
+          <div class="col-md-3">
+            <h5 style="color: #63c2de; text-align: right; margin-top: 10px">duration</h5>
+          </div>
+          <div class="col-md-8">
+            <select class="col-md-7" class="form-control" id="eventduration2">
+              <option disabled selected value> -- select duration -- </option>
+              <option value="15">15min</option>
+              <option value="30">30min</option>
+              <option value="45">45min</option>
+              <option value="60">1hour</option>
+              <option value="75">1hour 15min</option>
+              <option value="90">1hour 30min</option>
+              <option value="105">1hour 45min</option>
+              <option value="120">2hour</option>
+              <option value="135">2hour 15min</option>
+              <option value="150">2hour 30min</option>
+              <option value="165">2hour 45min</option>
+              <option value="180">3hour</option>
+            </select>
+          </div>
+        </div>
+        <p *ngIf="isWrongChannel" style="color:#f86c6b; margin-bottom: 3px">Select valid Event Channel.</p>
+        <div class="row">
+          <div class="col-md-3">
+            <h5 style="color: #63c2de; text-align: right; margin-top: 6px">channel</h5>
+          </div>
+          <div class="col-md-8">
+            <select class="browser-default custom-select mb-3" [(ngModel)]="editEvent.channel">
+              <option *ngFor="let item of eventtype">{{item}}</option>
+            </select>
+          </div>
+        </div>
+        <p *ngIf="isWrongDescription" style="color:#f86c6b; margin-bottom: 3px">Select valid Event Description.</p>
+        <div class="row">
+          <div class="col-md-3">
+            <h5 style="color: #63c2de; text-align: right; margin-top: 6px">description</h5>
+          </div>
+          <div class="col-md-8"> <textarea class="col-md-7" type="text" class="form-control" rows="2"
+              [(ngModel)]="editEvent.description"></textarea> </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="editEventModal.hide()">Close</button>
+          <button type="button" class="btn btn-info" (click)="changeSelectedEvent()">Change Event</button>
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #warningModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-warning" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Warning</h4>
+        <button type="button" class="close" (click)="warningModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>{{warningDescription}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" (click)="warningModal.hide()">Ok</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #aboutModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-primary" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Schedule request for session</h4>
+        <button type="button" class="close" (click)="aboutModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row" style="display: flex;justify-content: center;"
+          *ngIf="selectedEventProperty.source=='received'">
+          <div class="avatar">
+            <img src={{userAvatarPath+selectedEventPartner.userdata.avatarname}}
+              style="float: left; margin-right: 20px" />
+            <span *ngIf="selectedEventPartner.status.activity=='active'" class="avatar-status badge-success"></span>
+            <span *ngIf="selectedEventPartner.status.activity=='offline'" class="avatar-status badge-danger"></span>
+            <span *ngIf="selectedEventPartner.status.activity=='login'" class="avatar-status badge-warning"></span>
+          </div>
+          <div class="loginInfo">requested by
+            {{selectedEventPartner.userdata.name}}<br />{{selectedEventPartner.userdata.email}}</div>
+          <ng-template #t let-fill="fill" let-index="index">
+            <span class="star" [class.filled]="fill === 100">
+              <span class="half" [style.width.%]="fill">&#9733; </span> &#9733;
+            </span>
+          </ng-template>
+          <ngb-rating [(rate)]="selectedEventPartner.rating" [starTemplate]="t" [readonly]="true" max="5">
+          </ngb-rating>
+        </div>
+        <div class="row" style="display: flex;justify-content: center;" *ngIf="selectedEventProperty.source=='sent'">
+          <div class="avatar">
+            <img src={{userAvatarPath+selectedEventPartner.userdata.avatarname}}
+              style="float: left; margin-right: 20px" />
+            <span *ngIf="selectedEventPartner.status.activity=='active'" class="avatar-status badge-success"></span>
+            <span *ngIf="selectedEventPartner.status.activity=='offline'" class="avatar-status badge-danger"></span>
+            <span *ngIf="selectedEventPartner.status.activity=='login'" class="avatar-status badge-warning"></span>
+          </div>
+          <div class="loginInfo">sent to
+            {{selectedEventPartner.userdata.name}}<br />{{selectedEventPartner.userdata.email}}</div>
+        </div>
+        <div class="row" style="display: flex;justify-content: center;" *ngIf="selectedEventProperty.source=='self'">
+          <p>_This event is self-scheduled_</p>
+        </div>
+        <div class="row" style="margin-left: 15px; margin-right:10px">
+          <p style="margin: 0px">About Schedule Request for session...</p>
+        </div>
+        <div class="row" style="margin-left: 10px; margin-right:10px">
+          <p style="margin: 0px">title : {{selectedEventProperty.title}}</p>
+        </div>
+        <div class="row" style="margin-left: 10px; margin-right:10px">
+          <p class="col-md-6" style="margin: 0px">from : {{selectedEventProperty.start}}</p>
+          <p class="col-md-6" style="margin: 0px">to : {{selectedEventProperty.end}}</p>
+        </div>
+        <div class="row" style="margin-left: 10px; margin-right:10px">
+          <p class="col-md-6" style="margin: 0px">station : {{selectedEventProperty.channel}}</p>
+          <p class="col-md-6" style="margin: 0px">type : {{selectedEventProperty.type}}</p>
+        </div>
+        <div class="row" style="margin-left: 10px; margin-right:10px">
+          <p style="margin: 0px">description : {{selectedEventProperty.description}}</p>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="aboutModal.hide()">OK</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

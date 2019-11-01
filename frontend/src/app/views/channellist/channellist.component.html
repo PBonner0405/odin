@@ -1,0 +1,66 @@
+<div class="card">
+  <div class="card-header">
+    <div style="display: flex;justify-content: center;">
+      <ngx-select [multiple]="false" [items]="items" [disabled]="ngxDisabled" [(ngModel)]="selectedStationId"
+        optionValueField="id" optionTextField="text" optGroupLabelField="text" optGroupOptionsField="children"
+        placeholder="Stations..." (selectionChanges)="doSelectStation($event)" style="min-width: 200px; float: left">
+      </ngx-select>
+      <div class="input-group" style="max-width: 300px; float: left" (keyup.enter)="searchChannel()">
+        <input type="search" class="form-control" placeholder="What do you want to learn?" [(ngModel)]="currentKeyword">
+        <div class="input-group-append">
+          <button class="btn btn-secondary" type="button" (click)="searchChannel()">
+            <i class="fa fa-search"></i>
+          </button>
+        </div>
+      </div>
+      <a class="btn btn-secondary btn-outline-light" [routerLink]="['/channel']">Create your channel</a>
+    </div>
+  </div>
+  <div class="card-body" style="padding: 0px">
+
+    <div class="clickablebox" *ngFor="let item of searchResult.results" (click)="showChannelDetail(item)">
+      <div class="row" style="max-width: 1000px; margin: 0 auto;">
+        <div class="col-md-3" style="text-align: center; margin-top: 10px; margin-left: 0px; margin-right: 0px">
+          <img class="img-avatar" src={{defaultAvatarPath+item.channel.postuser.avatarname}} alt="Avatar"><br>
+          <span
+            style="background-color: rgb(70, 70, 70); border-radius: 5px; padding-top: 3px; padding-bottom: 3px; padding-left: 28px; padding-right: 28px; max-width:80px; color: white;">{{item.channel.postuser.activity}}<i
+              class="fa fa-circle {{item.channel.postuser.activity}}"></i>
+          </span><br>
+          <button *ngIf="currentUser._id!=item.channel.postuser._id" class="btn btn-success custombutton"
+            [routerLink]="['/message']" (click)="contactStart(item.channel.postuser._id)">
+            <span><i class="fa fa-wechat fa-lg" style="margin-top: 0px"></i></span>
+            Chat Now
+          </button>
+          <p>{{item.channel.postuser.name}}</p>
+        </div>
+        <div class="col-md-6" style="text-align: center; margin-top: 10px">
+          <h4 class="card-sub align-middle">{{item.channel.data.title}}</h4>
+          <div style="width: 100%; text-align: left">
+            <span
+              style="background-color: #ddd; border-radius: 5px; padding-top: 3px; padding-bottom: 3px; padding-left: 30px; padding-right: 30px; color: indianred">{{item.channel.data.skill}}
+            </span>
+            <div><u style="color: #f86c6b; float: right">views: {{item.channel.data.visitorids.length}}</u></div><br>
+          </div>
+
+          <i class="fa fa-calendar fa-lg mt-4"> {{item.channel.data.createddate.substring(0,10)}}</i>
+          <i class="fa fa-dollar fa-lg mt-4"> {{item.channel.data.price+" $"}}</i>
+          <i class="fa fa-clock-o fa-lg mt-4"> {{item.channel.data.duration+" mins"}}</i>
+          <i class="fa fa-users fa-lg mt-4"> {{item.channel.data.attendeecnt+" attendees"}}</i> <br /><br />
+          <div [clamp]="2">
+            <p>{{item.channel.data.description}}</p>
+          </div>
+          <span><i></i></span>
+        </div>
+        <div class="col-md-3" style="text-align: center; margin-top: 10px">
+          <video style="width: 100%">
+            <source src={{defaultUploadPath+item.channel.data.files[0]}} type="video/mp4">
+            <source src={{defaultUploadPath+item.channel.data.files[0]}} type="video/ogg">
+            Your browser does not support the video tag.
+          </video>
+
+          <p>{{item.channel.data.files.length+" videos posted"}}</p>
+        </div>
+      </div>
+    </div>
+  </div><!-- END CARD DECK -->
+</div>

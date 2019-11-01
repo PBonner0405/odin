@@ -1,0 +1,33 @@
+h5 {
+  font-family: cursive;
+}
+
+h6 {
+  font-family: cursive;
+}
+
+h3 {
+  font-family: monospace;
+}
+
+.worklist-item {
+  list-style-type: none;
+  margin: 2px;
+  font-size: 16px;
+  text-decoration: underline;
+  color: #7620b2;
+}
+.tooltip-inner {
+  white-space:pre;
+  max-width:none;
+}
+
+.slideimg {
+  mask-image: linear-gradient(black, white, transparent);
+-webkit-mask-image: linear-gradient(black, white, transparent);
+  max-height: 800px;
+}
+
+.titlecolor {
+  color: #2f353a;
+}

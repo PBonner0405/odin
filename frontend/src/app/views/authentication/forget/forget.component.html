@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+      <div class="card-group" style="margin-top: 100px">
+        <div class="card p-4">
+          <form class="card-body" id='forgetForm'  method="post">
+            <h3>Reset your password</h3>
+            <p class="text-muted">Enter your email address and we will send you a link to reset your password.</p>
+            <p *ngIf="isWrongEmail" style="color:#f86c6b; margin-bottom: 3px">Input valid email.</p>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                    <span class="input-group-text">@</span>
+              </div>
+              <input class="form-control" type="text" name="email" placeholder="Enter your email address" [(ngModel)]="user.email"/>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <button type="submit" id="btnlogin" class="btn btn-primary px-4" type="button" style="width: 100%" (click)="sendMail()">
+                  Send password reset email
+                  <i class="fa fa-spinner busySplash" [class.Show]="isBusy"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,47 @@
+$green: #86BB71;
+$yellow: rgb(223, 206, 55);
+$red: #E38968;
+
+.img-avatar {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  max-width: 50%;
+  border: 2px solid #ccc;
+}
+
+.clickablebox {
+  border: 1px solid #ddd;
+  margin: 0px;
+  width: 100%;
+  text-align: center;
+}
+
+.clickablebox:hover {
+  background-color: #eee;
+}
+
+.custombutton {
+  margin-top: 2px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.active, .offline, .login {
+  margin-right: 3px;
+  font-size: 10px;
+}
+
+.active {
+  color: $green;
+}
+  
+.login {
+  color: $yellow;
+}
+
+.offline {
+  color: $red;
+}

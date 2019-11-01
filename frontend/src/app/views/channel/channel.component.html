@@ -1,0 +1,234 @@
+<div class="page-header" style="background-color: lightgray; display: flex;justify-content: center;">
+  <h2 style="color: rgb(80, 80, 80); margin-top: 30px; margin-bottom: 25px">MAKE YOUR CHANNEL</h2>
+</div>
+
+<div style="display: flex;justify-content: center;">
+  <!-- <p>Provide details about yourself. The more you share, the more you will stand out!<p> -->
+  <div class="row" style="max-width: 800px">
+    <div class="col-md-6" style="justify-content: center;">
+
+      <div style="text-align: center; margin-top: 10px">
+        <p>Profile Image</p>
+        <img src={{avatarPath}} alt="Avatar" style="border-radius: 50%; max-width: 50%;">
+      </div>
+    </div>
+    <div class="col-md-6">
+      <p style="margin-top: 10px">Title</p>
+      <p *ngIf="isWrongTitle" style="color:#f86c6b; margin-bottom: 3px">*Input valid Title*</p>
+      <input type="text" style="width: 100%" [(ngModel)]="channeltmp.title" />
+      <p style="margin-top: 10px">Introduce Yourself</p>
+      <p *ngIf="isWrongDescription" style="color:#f86c6b; margin-bottom: 3px">*Input valid Description(at least 100 letters)*</p>
+      <textarea type="text" style="width: 100%" rows="4" [(ngModel)]="channeltmp.description"></textarea>
+      <p style="color:rgb(83, 83, 83)"> A minimum length of 100 letters is recommended. </p>
+    </div>
+    <div class="col-md-12" style="max-width: 800px; background: rgb(173, 173, 173); height: 2px;"></div>
+    <br />
+    <div class="col-md-3" style="text-align: center;">
+      <h5 style="font-family: cursive;">Add Skill</h5>
+      <p *ngIf="isWrongSkill" style="color:#f86c6b; margin-bottom: 3px">*Select valid Skill*</p>
+      <button class="btn btn-success" (click)="skillTagModal.show()">+Add Skill</button>
+    </div>
+    <div class="col-md-3">
+      <button class="btn btn-secondary" *ngIf="currentSkill!=''">{{currentSkill}}</button>
+    </div>
+    <div class="col-md-6" style="text-align: center;">
+      <h5 style="font-family: cursive;">Select Station</h5>
+      <p *ngIf="isWrongStation" style="color:#f86c6b; margin-bottom: 3px">*Select valid Station*</p>
+      <ngx-select [multiple]="false" [items]="items" [disabled]="ngxDisabled" [(ngModel)]="selectedStationId"
+        optionValueField="id" optionTextField="text" optGroupLabelField="text" optGroupOptionsField="children"
+        placeholder="Stations..." (selectionChanges)="doSelectStation($event)">
+      </ngx-select>
+    </div>
+    <!-- <div class="row" style="margin-top: 10px">
+        <div class="col-md-6" style="justify-content: center;">
+          <select style="width: 80%">
+            <option *ngFor="let skill of skilltags" >{{skill}}</option>
+          </select>
+        </div>
+        <div class="col-md-6" style="justify-content: center;">
+         
+        </div>
+      </div> -->
+    <div class="col-md-12" style="max-width: 800px; background: rgb(173, 173, 173); height: 2px; margin-top: 10px">
+    </div>
+    <div class="col-md-12" style="margin-top: 10px">
+      <p>Your Level of Expertise</p>
+      <p style="color:rgb(83, 83, 83)"> How experienced are you on your class’ topic? </p>
+    </div>
+    <p *ngIf="isWrongLevel" style="color:#f86c6b; margin-bottom: 3px">*Select valid Level.*</p>
+    <div class="col-md-12 btn-group" data-toggle="buttons">
+      <label class="btn btn-success" style="margin: 5px" (click)="selectIntermediateLevel()">
+        <input type="radio" name="options" id="option1" style="display: none" checked> Intermediate
+        <div>
+          Presenters with some experience.
+        </div>
+      </label>
+      <label class="btn btn-success" style="margin: 5px" (click)="selectProfessionalLevel()">
+        <input type="radio" name="options" id="option2" style="display: none"> Professional
+        <div>
+          Presenters with professtional experience.
+        </div>
+      </label>
+      <label class="btn btn-success" style="margin: 5px" (click)="selectExpertLevel()">
+        <input type="radio" name="options" id="option3" style="display: none"> Expert
+        <div>
+          Presenters with expert level.
+        </div>
+      </label>
+    </div>
+
+    <div class="col-md-12" style="margin-top: 20px">
+      <p>Your Class Plan</p>
+      <p style="color:rgb(83, 83, 83)"> Please select your class options... </p>
+    </div>
+
+    <div class="col-md-4">
+      <p style="margin-left: 10px">Price per hour</p>
+      <p *ngIf="isWrongPrice" style="color:#f86c6b; margin-bottom: 3px">*Input valid Price.*</p>
+      <input type="number" style="width: 100%" placeholder="hourly rate" [(ngModel)]="channeltmp.price">
+    </div>
+    <div class="col-md-4">
+      <p style="margin-left: 10px">Duration of Class Minute</p>
+      <p *ngIf="isWrongDuration" style="color:#f86c6b; margin-bottom: 3px">*Input valid Duration.*</p>
+      <input type="number" style="width: 100%" placeholder="class duration" [(ngModel)]="channeltmp.duration">
+    </div>
+    <div class="col-md-4">
+      <p style="margin-left: 10px">Maximum number of Attendees</p>
+      <p *ngIf="isWrongAttendeeCnt" style="color:#f86c6b; margin-bottom: 3px">*Input valid Attendee Count.*</p>
+      <input type="number" style="width: 100%" placeholder="count of attendees" [(ngModel)]="channeltmp.attendeecnt">
+    </div>
+
+    <div class="col-md-12" style="max-width: 800px; background: rgb(173, 173, 173); height: 2px; margin-top: 10px">
+    </div>
+
+    <!-- <div class="form-group">
+      <label for="file">Choose File</label>
+      <input type="file"
+             id="file"
+             (change)="handleFileInput($event.target.files)"
+             accept="image/png, image/jpeg, video/avi, video/mp4"
+            >
+      </div> -->
+    <div class="col-md-12" style="margin-top: 20px">
+      <p *ngIf="isWrongPaypal" style="color:#f86c6b; margin-bottom: 3px">*Input valid paypal mail.*</p>
+      <p style="margin-left: 30px">Paypal Email: <input type="text" style="width: 300px;" placeholder="paypal email" [(ngModel)]="channeltmp.paypalmail"></p>
+    </div>
+    <div class="input-group" *ngFor="let item of uploadFileList; let i = index"
+      style="margin-left: 20px; margin-right: 20px;">
+      <p *ngIf="isWrongVideoPrice[i]" style="color:#f86c6b; margin-bottom: 3px">*Input valid video price.*</p><br>
+      <p style="margin:auto; margin-left: 10px; margin-right: 6px;">Set Price</p>
+      <label class="switch switch-label switch-pill switch-success" style="margin: auto; margin-right: 6px;">
+        <input id="check{{i}}" type="checkbox" class="switch-input" (change)="setPriceTick(i)" checked>
+        <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+      </label>
+      <input id="price{{i}}" type="number" placeholder="price for video($)"
+        style="height: 27px; margin: auto; margin-right: 6px;">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+      </div>
+      <div class="custom-file">
+        <input type="file" class="custom-file-input" id="inputGroupFile01"
+          (change)="handleFileInput($event.target.files, i)" aria-describedby="inputGroupFileAddon01"
+          accept="video/mp4">
+        <label class="custom-file-label" *ngIf="item==null" for="inputGroupFile01">Choose file</label>
+        <label class="custom-file-label" *ngIf="item!=null" for="inputGroupFile01">{{item.name}}</label>
+      </div>
+      <button type="button" class="close" aria-label="Close" (click)="removeUploadFile(i)"
+        style="padding-left: 5px; padding-right: 5px">
+        <span *ngIf="uploadFlagList[i]==0" aria-hidden="true">×</span>
+        <span *ngIf="uploadFlagList[i]==1" aria-hidden="true">Uploading...</span>
+        <span *ngIf="uploadFlagList[i]==2" aria-hidden="true">Done</span>
+        <span *ngIf="uploadFlagList[i]==3" aria-hidden="true">Failed</span>
+      </button>
+    </div>
+    <div class="col-md-12" style="text-align: center;margin-top: 10px">
+      <button class="btn btn-success" (click)="addUploadFile()">+Add Field</button>
+    </div>
+
+    <div class="col-md-12" style="margin-top: 20px">
+      <p>About This...</p>
+      <p style="color:rgb(83, 83, 83); margin-bottom: 3px;"> Use this videos, you can advertise your skills and classes
+        to get your observers.</p>
+      <p style="color:rgb(83, 83, 83); margin-bottom: 3px;"> Include details such as:</p>
+      <p style="color:rgb(83, 83, 83); margin-bottom: 3px;"> -What will the class focus on?</p>
+      <p style="color:rgb(83, 83, 83); margin-bottom: 3px;"> -How will they benefit after taken class?</p>
+      <p style="color:rgb(83, 83, 83); margin-bottom: 3px;"> -Which skills that observers can get?</p>
+      <p style="color:rgb(83, 83, 83); margin-bottom: 3px;"> -How can get fun?</p>
+      <p style="color:rgb(83, 83, 83); margin-bottom: 3px;"> -Which language that can use in your class?</p>
+      <p style="color:rgb(83, 83, 83); margin-bottom: 3px;"> (Maximum upload file limit: 50Mb per file, and filetype
+        must be *.MP4)</p>
+    </div>
+    <div class="col-md-12" style="text-align: center;margin-top: 10px; margin-bottom: 10px">
+      <button *ngIf="isBusy==false" class="btn btn-primary" (click)="uploadFileToActivity()">
+        Create Channel with Upload videos
+        <i class="fa fa-spinner busySplash" [class.Show]="isBusy"></i>
+      </button>
+      <button *ngIf="isBusy==true" class="btn btn-primary" (click)="uploadFileToActivity()">
+        Uploading...
+        <i class="fa fa-spinner busySplash" [class.Show]="isBusy"></i>
+      </button>
+    </div>
+
+
+    <!--/.col-->
+  </div>
+</div>
+
+<div bsModal #skillTagModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-success" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Skill</h4>
+        <button type="button" class="close" (click)="skillTagModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Please select matched skill&hellip;</p>
+        <button *ngFor="let skill of skilltags" class="btn btn-secondary" style="margin: 5px"
+          (click)="selectSkill(skill)">{{skill}}</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #successUploadModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-success" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Success</h4>
+        <button type="button" class="close" (click)="successUploadModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Your channel has been created&hellip;</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="successUploadModal.hide()">OK</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #failedUploadModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-danger" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Failed</h4>
+        <button type="button" class="close" (click)="failedUploadModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Channel creation has been failed with some errors&hellip;</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="failedUploadModal.hide()">OK</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

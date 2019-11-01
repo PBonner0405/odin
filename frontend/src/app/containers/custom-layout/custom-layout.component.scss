@@ -1,0 +1,43 @@
+.setHeightImg {
+    height: 42px !important; 
+}
+.loginInfo {
+    float: left;
+  }
+
+@media (max-width: 800px){
+    .loginInfo {
+        display: none;
+      }
+}
+
+.switchalign{
+  margin-bottom: 0px;
+  vertical-align: bottom;
+}
+
+.modestyle{
+  font-size: 16px;
+  color: #20a8d8;
+}
+
+.back_div{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(1, 1, 1, 0.3);
+  display: none;
+  z-index: 2000;
+}
+
+
+  
+.btn-success:not(.active) > .fa-check-circle {
+  display: none;
+}
+
+.btn-info:not(.active) > .fa-check-circle {
+  display: none;
+}

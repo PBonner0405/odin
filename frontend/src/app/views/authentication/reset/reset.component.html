@@ -1,0 +1,28 @@
+<div class="container">	
+  <div class="row justify-content-center" style="margin-top:100px">
+  
+      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div class="card-group">
+              <div class="card p-4">
+                  <h2><strong>Reset Password</strong><br/></h2><br/>
+                  <!-- Start form -->
+                      <form calss="card-body">
+                      <div class="form-group">
+                          <label for="exampleInputPassword1">Please input your new password to login our website.</label>
+                          <p *ngIf="isWrongPassword" style="color:#f86c6b; margin-bottom: 3px">Input valid email.</p>
+                          <input type="password" class="form-control" name="password" id="password" placeholder="Password" [(ngModel)]="user.password">
+                      </div>
+                      <div class="form-check">
+                          <button class="btn btn-info" type="button" name="showpassword" id="showpassword" value="Show Password" (click)="showPassword()">Show password</button> 
+                          <button type="submit" id="send" class="btn btn-primary" (click)="sendPassword()">
+                            Submit
+                            <i class="fa fa-spinner busySplash" [class.Show]="isBusy"></i>
+                          </button>
+                      </div>
+                      </form>
+                  <!-- End form -->  
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
